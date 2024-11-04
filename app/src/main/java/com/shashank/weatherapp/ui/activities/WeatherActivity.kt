@@ -1,6 +1,7 @@
 package com.shashank.weatherapp.ui.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -9,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shashank.weatherapp.R
 import com.shashank.weatherapp.databinding.ActivityWeatherBinding
 import com.shashank.weatherapp.ui.adapters.CustomAdapterSearchedCityTemperature
@@ -34,6 +36,7 @@ class WeatherActivity : AppCompatActivity(), KodeinAware {
         dataBind = DataBindingUtil.setContentView(this, R.layout.activity_weather)
         setupUI()
         observeAPICall()
+        setupBottomNavigation()
     }
 
     private fun setupUI() {
@@ -58,6 +61,27 @@ class WeatherActivity : AppCompatActivity(), KodeinAware {
             layoutManager = mLayoutManager
             itemAnimator = DefaultItemAnimator()
             adapter = customAdapterSearchedCityTemperature
+        }
+    }
+
+    private fun setupBottomNavigation() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    // Handle Home navigation if needed
+                    true
+                }
+                R.id.forecast -> {
+                    startActivity(Intent(this, Forecast::class.java))
+                    true
+                }
+                R.id.settings -> {
+                    startActivity(Intent(this, Settings::class.java))
+                    true
+                }
+                else -> false
+            }
         }
     }
 
