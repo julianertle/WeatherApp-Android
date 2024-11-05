@@ -8,9 +8,14 @@ import com.shashank.weatherapp.ui.viewmodel.WeatherViewModel
 @Suppress("UNCHECKED_CAST")
 class WeatherViewModelFactory(
     private val repository: WeatherRepository
-) : ViewModelProvider.NewInstanceFactory() {
+) : ViewModelProvider.Factory {  // Implement ViewModelProvider.Factory
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return WeatherViewModel(repository) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return when {
+            modelClass.isAssignableFrom(WeatherViewModel::class.java) -> {
+                WeatherViewModel(repository) as T
+            }
+            else -> throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 }
